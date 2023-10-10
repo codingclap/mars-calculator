@@ -305,43 +305,7 @@
             visibility: hidden;
         }
     }
-    @media (max-width: 500px) {
-        .mars-desc{
-            font-size: 0.9em;
-        }
-        #moon-result .moon-result-box{
-            min-height: 222px;
-        }
-        #moon-horoscope-form fieldset {
-            flex-direction: column;
-            gap: 0.5em;
-        }
-        #moon-input-container p{
-            width: 100%;
-            font-size: 0.9em;
-            line-height: 27px;
-        }
-        #moon-input-container .h1 {
-            width: 100%;
-            font-size: 3em;
-        }
-        #moon-horoscope-form{
-            margin-top: 1em;
-        }
-        #moon-submit-button input{
-            margin-top:1em;
-        }
-        #moon-result{
-            gap:0px;
-        }
-        .moon-result-boxes .moon-result-para{
-            font-size: 0.9em;
-            line-height: 27px;
-        }
-        #moon-jump-btn button{
-            font-size: 0.9em;
-        }
-    }
+    
     /* Result */
     #moon-result-container {
         font-size: 1em;
@@ -382,17 +346,7 @@
     }
 
     /* updated */
-    @media (max-width: 500px) {
-
-        #moon-result .moon-result-boxes {
-            text-align: center !important;
-        }
-
-        #moon-result .moon-result-box {
-            max-width: 380px;
-        }
-    }
-
+    
     #moon-result .moon-result-box:after {
         position: absolute;
         content: "";
@@ -436,30 +390,7 @@
         justify-content: center;
     }
 
-    @media (max-width: 900px) {
-        #moon-result .moon-result-boxes {
-    text-align: center !important;
-}
-        #moon-result {
-            flex-direction: column;
-            padding: 1em 0.5em;
-        }
-
-        #moon-result .column-separator {
-            display: none;
-        }
-
-        #moon-result .moon-result-box:after {
-            position: absolute;
-            content: "";
-            height: 100%;
-            border-right: 0px;
-            right: 0px;
-            border-bottom: 2px dotted #f39556;
-            top: 25px;
-            width: 100%;
-        }
-    }
+   
 
     #moon-result .column-separator img {
         width: 100%;
@@ -524,7 +455,9 @@
         width: min(100%, var(--divider-max-width));
         margin: 0.5em auto;
     }
-
+    #moon-resources{
+        padding-top:10px;
+    }
     #moon-resources>.moon-resource-links {
         margin-top: 0.2em;
         margin-bottom: 0.5em;
@@ -575,6 +508,80 @@
     .moon-loader>figure>img {
         width: 100%;
         height: 100%;
+    }
+
+
+    @media (max-width: 900px) {
+        #moon-result .moon-result-boxes {
+         text-align: center !important;
+        }
+        #moon-result {
+            flex-direction: column;
+            padding: 1em 0.5em;
+        }
+
+        #moon-result .column-separator {
+            display: none;
+        }
+
+        #moon-result .moon-result-box:after {
+            position: absolute;
+            content: "";
+            height: 100%;
+            border-right: 0px;
+            right: 0px;
+            border-bottom: 2px dotted #f39556;
+            top: 25px;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .moon-inputs-container input, .moon-inputs-container select{
+            font-size: 0.9em;
+        }
+        .mars-desc{
+            font-size: 0.9em;
+        }
+        #moon-result .moon-result-box{
+            min-height: 222px;
+        }
+        #moon-horoscope-form fieldset {
+            flex-direction: column;
+            gap: 0.5em;
+        }
+        #moon-input-container p{
+            width: 100%;
+            font-size: 0.9em;
+            line-height: 27px;
+        }
+        #moon-input-container .h1 {
+            width: 100%;
+            font-size: 3em;
+        }
+        #moon-horoscope-form{
+            margin-top: 1em;
+        }
+        #moon-submit-button input{
+            margin-top:1em;
+        }
+        #moon-result{
+            gap:0px;
+        }
+        .moon-result-boxes .moon-result-para{
+            font-size: 0.9em;
+            line-height: 27px;
+        }
+        #moon-jump-btn button{
+            font-size: 0.9em;
+        }
+        #moon-result .moon-result-boxes {
+            text-align: center !important;
+        }
+
+        #moon-result .moon-result-box {
+            max-width: 380px;
+        }
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
