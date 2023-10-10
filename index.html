@@ -1,0 +1,1410 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    @font-face {
+        font-family: 'Cabin Medium';
+        src: url('infographics/fonts/Cabin-Medium.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Cabin Regular';
+        src: url('infographics/fonts/Cabin-Regular.ttf') format('truetype');
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: 'Cabin Bold';
+        src: url('infographics/fonts/Cabin-Bold.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Dancing Script';
+        src: url('infographics/fonts/DancingScript.ttf') format('truetype');
+    }
+
+    #moon-calculator {
+        --container-max-width: 980px;
+        --divider-max-width: 980px;
+        --primary-color: #fff;
+        --secondary-color: #f4954e;
+        --btn-text-color: #4c1c1c;
+        --input-bg-color: rgba(240, 184, 121, 0.2);
+        --input-border-color: #fff7;
+    }
+
+    #moon-calculator {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: clamp(16px, calc(5vw + 0.5rem), 20px);
+        text-align: center;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        color: var(--primary-color);
+        font-family: 'Cabin Regular';
+        min-height: 100vh;
+    }
+
+    :where(#moon-calculator *) {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .moon-header {
+        height: 2vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .moon-main {
+        width: min(90%, var(--container-max-width));
+        margin: 0 auto;
+    }
+
+    .moon-header img {
+        height: min(50px, 10vh);
+    }
+     
+    .moon-main>#moon-input-container,
+    .moon-main>#moon-result-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: top;
+        margin: 0 auto;
+        margin-top: 1em;
+    }
+
+    /* Inputs */
+    #moon-horoscope-form {
+        text-align: start;
+        width: min(90%, calc(var(--container-max-width) * 0.8));
+        margin-top: 2em;
+    }
+
+    #moon-horoscope-form fieldset {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 1em;
+        width: 100%;
+        margin: 0.5em auto;
+        border: none;
+    }
+
+   
+
+    #moon-horoscope-form fieldset>label {
+        font-size: 1.07em;
+        white-space: nowrap;
+        width: 98px;
+        display: inline-block;
+        font-family: 'Cabin Bold';
+    }
+
+    .moon-inputs-container {
+        display: flex;
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    #moon-input-container .h1 {
+        font-family: 'Dancing Script';
+        font-size: 3.5em;
+        margin: 0 auto;
+        padding: 0;
+        color: #f4954e;
+        width:80%;
+    }
+
+    #moon-input-container p {
+        font-size: 1em;
+        margin: 1em 1em auto;
+        line-height: 30px;
+        width:89%;
+    }
+
+    .moon-inputs-container input,
+    .moon-inputs-container select {
+        width: 100%;
+        height: 2em;
+        border: 1.9px solid #fff;
+        border-radius: 5px;
+        padding-left: 0.5em;
+        background-color: #365ea51a;
+        color: var(--primary-color);
+        font-size: 1em;
+        text-align: start;
+        margin: 0 0.2em;
+        cursor: pointer;
+        transition: background-color 0.25s linear;
+        font-family: 'Cabin Bold';
+    }
+
+    .moon-inputs-container input:hover,
+    .moon-inputs-container select:hover,
+    .moon-inputs-container input:active,
+    .moon-inputs-container select:active {
+        background-color: #fff2;
+    }
+
+    .moon-inputs-container option {
+        color: black;
+        background-color: white;
+        max-height: 300px;
+    }
+
+    #moon-result-container .h1 {
+        font-family: 'Dancing Script';
+        font-size: 3.5em;
+        margin: 0 auto;
+        padding: 0;
+        color: #f4954e;
+    }
+
+    #moon-result-container .h2 {
+        font-family: 'Dancing Script';
+        font-size: 2.5em;
+        margin: 0 auto;
+        padding: 0;
+        color: #f4954e;
+        padding-bottom: 21px;
+        padding-top: 21px;
+    }
+
+    #moon-submit-button {
+        text-align: center;
+        font-size: 1.12em;
+    }
+
+    #moon-place-container {
+        position: relative;
+        width: 100%;
+    }
+
+    #moon-place-input-container {
+        flex-wrap: wrap;
+    }
+
+    #moon-place-suggestions {
+        position: absolute;
+        background: var(--primary-color);
+        color: black;
+        list-style: none;
+        padding: 0;
+        max-height: 200px;
+        overflow-y: scroll;
+        width: 100%;
+        z-index: 1;
+    }
+
+    #moon-place-suggestions li {
+        padding: 0.4em;
+        cursor: pointer;
+        border-bottom: 2px solid #ccc;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    #moon-place-suggestions li:hover {
+        background: var(--secondary-color);
+        color: var(--primary-color);
+    }
+
+    #moon-submit-button {
+        justify-content: center !important;
+    }
+
+    #moon-submit-button input {
+        font-size: 1em;
+        padding: 0.4em 1.5em;
+        color: var(--btn-text-color);
+        background: #f4954e;
+        border: none;
+        margin-top: 2em;
+        cursor: pointer;
+        font-family: 'Cabin Bold';
+        border-radius: 40px;
+    }
+
+    #moon-jump-btn button {
+        font-size: 1.1em;
+        padding: 0.7em 2.5em 0.7em 1.3em;
+        color: #0c0c0c;
+        background: #f4954e;
+        border: none;
+        margin-top: 2em;
+        margin-bottom: 2em;
+        cursor: pointer;
+        font-family: 'Cabin Bold';
+        border-radius: 40px;
+        position: relative;
+    }
+
+    #moon-jump-btn button:after {
+        position: absolute;
+        content: " ";
+        /* background-image: url(infographics/images/arrow.svg); */
+        background-repeat: no-repeat;
+        height: 29px;
+        width: 16px;
+        right: 23px;
+        top: 15px;
+    }
+
+    #moon-submit-button input:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    #moon-submit-button input:focus {
+        background: var(--secondary-color);
+        opacity: 0.9;
+    }
+
+    .moon-hidden {
+        display: none !important;
+    }
+
+    .anime-hidden {
+        animation: fadeOut 2s forwards;
+    }
+
+    .anime-visible {
+        animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        to {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        to {
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+    @media (max-width: 500px) {
+        #moon-horoscope-form fieldset {
+            flex-direction: column;
+            gap: 0.5em;
+        }
+        #moon-input-container p{
+            width: 100%;
+            font-size: 0.9em;
+        }
+        #moon-input-container .h1 {
+            width: 100%;
+        }
+    }
+    /* Result */
+    #moon-result-container {
+        font-size: 1em;
+    }
+
+    #moon-result {
+        width: min(100%, var(--container-max-width));
+        padding: 1.5em 2em 1.3em 2em;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        gap: 2.5em;
+        border: 2px solid #f4954e;
+        border-radius: 1em;
+        margin: 0.2em 1em 2em 1em;
+    }
+
+
+
+    #moon-result .moon-result-box {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        /* max-width: 480px; */
+        max-width: 200px;
+        justify-content: start;
+        align-items: center;
+        gap: 2px;
+        position: relative;
+        min-height: 250px;
+    }
+
+    /* updated */
+    #moon-result .moon-result-boxes {
+        width: inherit;
+        text-align: left;
+        line-height: 1.5em;
+    }
+
+    /* updated */
+    @media (max-width: 500px) {
+
+        #moon-result .moon-result-boxes {
+            text-align: center !important;
+        }
+
+        #moon-result .moon-result-box {
+            max-width: 380px;
+        }
+    }
+
+    #moon-result .moon-result-box:after {
+        position: absolute;
+        content: "";
+        height: 100%;
+        border-right: 2.5px dotted #f4954e;
+        right: -10px;
+    }
+
+    #moon-result .moon-result-box:last-child:after {
+        border: 0px solid black;
+    }
+
+    #moon-result .moon-result-box .moon-result-img {
+        width: 180px;
+    }
+
+    #moon-result .moon-result-box h3.moon-result-head {
+        font-family: 'Cabin Bold';
+        font-size: 1.4em;
+        line-height: 1.5em;
+        color: #f4954e;
+        padding: 5px 0px 0px;
+    }
+
+    #moon-result .moon-result-box p.moon-result-para {
+        font-family: 'Cabin Regular';
+        font-size: 1.1em;
+        line-height: 1.2em;
+        color: #ffffff;
+        padding: 4px 0px 0px;
+    }
+
+
+
+    #moon-result .column-separator {
+        align-self: normal;
+        width: 112px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (max-width: 900px) {
+        #moon-result {
+            flex-direction: column;
+            padding: 1em 0.5em;
+        }
+
+        #moon-result .column-separator {
+            display: none;
+        }
+
+        #moon-result .moon-result-box:after {
+            position: absolute;
+            content: "";
+            height: 100%;
+            border-right: 0px;
+            right: 0px;
+            border-bottom: 2px dotted #f39556;
+            top: 25px;
+            width: 100%;
+        }
+    }
+
+    #moon-result .column-separator img {
+        width: 100%;
+        height: 100%;
+    }
+
+    #moon-moon-sign {
+        font-family: 'Dancing Script';
+        font-size: 3em;
+        margin-bottom: 0.2em;
+        color: var(--secondary-color);
+    }
+
+    #moon-zodiac-sign-image img {
+        width: min(80vw, 120px);
+        min-width: 120px;
+    }
+
+    #moon-zodiac-details {
+        text-align: start;
+        padding: 1em;
+    }
+
+    #moon-zodiac-description {
+        font-family: 'Cabin Regular';
+        font-size: 1em;
+        line-height: 1.5em;
+    }
+
+    #moon-result-container>p {
+        width: min(100%, var(--container-max-width));
+        line-height: 1.5em;
+    }
+
+    #moon-retry p {
+        cursor: pointer;
+        color: white;
+        margin: 1em auto;
+        font-family: 'Cabin Bold';
+    }
+
+    #moon-left-arrow {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    #moon-retry p {
+        animation: slideHorizontally 0.5s ease-in-out 0ms infinite forwards alternate;
+    }
+
+    @keyframes slideHorizontally {
+        0% {
+            transform: translateX(0px);
+        }
+
+        100% {
+            transform: translateX(-10px);
+        }
+    }
+
+    #moon-divider {
+        width: min(100%, var(--divider-max-width));
+        margin: 0.5em auto;
+    }
+
+    #moon-resources>.moon-resource-links {
+        margin-top: 0.2em;
+        margin-bottom: 0.5em;
+    }
+
+    #moon-resources>.moon-resource-links>a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 12px;
+        margin: 0;
+        display: inline-block;
+        margin-bottom: 5px;
+        overflow-wrap: anywhere;
+    }
+
+    #moon-resources h4 {
+        font-family: 'Cabin Regular';
+        font-weight: 500;
+        font-size: 22px;
+        padding-bottom: 10px;
+    }
+
+    .moon-loader {
+        background-color: transparent;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+    }
+
+    .moon-loader>figure {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        animation: spin 1s infinite linear;
+    }
+
+    .moon-loader>figure>img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<div id="moon-calculator" class="moon-container"
+    style="background: url('infographics/images/background1.jpg') #0f6260eb">
+    <div class="moon-loader anime-hidden">
+        <figure class="moon-loading-images"></figure>
+    </div>
+    <div class="moon-header"> </div>
+    <div class="moon-main">
+
+        <!--------------------------------- First Page End ---------------------------------->
+        <div id="moon-input-container" class="">
+            <img src="infographics/images/PS-logo.png" width="280px"><br>
+            <h2 class="h1">Mars Sign Calculator</h2>
+            <img src="infographics/images/line.svg" width="90%">
+            <p>The position of Mars in your astrological chart yields valuable information about your
+                most primal nature. Mars impacts your sexuality, assertiveness, energy levels, willpower, and how you
+                deal with anger. Learning more about your Mars sign will help you align your intentions with your innate
+                nature so you can fully manifest your desires.
+            </p>
+            <form id="moon-horoscope-form" data-gtm-form-interact-id="0">
+                <fieldset id="moon-birth_date"><label for="moon-birth_date">Birth Date:</label>
+                    <div class="moon-inputs-container"><label hidden="" for="moon-month">Month:</label><select
+                            id="moon-month" name="month" required="" data-gtm-form-interact-field-id="0">
+                            <option hidden="" disabled="disabled" selected="selected" value="">MM</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>s
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select><label hidden="" for="moon-day">Day:</label><select id="moon-day" name="day"
+                            required="" data-gtm-form-interact-field-id="1">
+                            <option hidden="" disabled="disabled" selected="selected" value="">DD</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select><label hidden="" for="moon-year">Year:</label><select id="moon-year" name="year"
+                            required="" data-gtm-form-interact-field-id="2">
+                            <option hidden="" disabled="disabled" selected="selected" value="">YYYY</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                            <option value="2014">2014</option>
+                            <option value="2013">2013</option>
+                            <option value="2012">2012</option>
+                            <option value="2011">2011</option>
+                            <option value="2010">2010</option>
+                            <option value="2009">2009</option>
+                            <option value="2008">2008</option>
+                            <option value="2007">2007</option>
+                            <option value="2006">2006</option>
+                            <option value="2005">2005</option>
+                            <option value="2004">2004</option>
+                            <option value="2003">2003</option>
+                            <option value="2002">2002</option>
+                            <option value="2001">2001</option>
+                            <option value="2000">2000</option>
+                            <option value="1999">1999</option>
+                            <option value="1998">1998</option>
+                            <option value="1997">1997</option>
+                            <option value="1996">1996</option>
+                            <option value="1995">1995</option>
+                            <option value="1994">1994</option>
+                            <option value="1993">1993</option>
+                            <option value="1992">1992</option>
+                            <option value="1991">1991</option>
+                            <option value="1990">1990</option>
+                            <option value="1989">1989</option>
+                            <option value="1988">1988</option>
+                            <option value="1987">1987</option>
+                            <option value="1986">1986</option>
+                            <option value="1985">1985</option>
+                            <option value="1984">1984</option>
+                            <option value="1983">1983</option>
+                            <option value="1982">1982</option>
+                            <option value="1981">1981</option>
+                            <option value="1980">1980</option>
+                            <option value="1979">1979</option>
+                            <option value="1978">1978</option>
+                            <option value="1977">1977</option>
+                            <option value="1976">1976</option>
+                            <option value="1975">1975</option>
+                            <option value="1974">1974</option>
+                            <option value="1973">1973</option>
+                            <option value="1972">1972</option>
+                            <option value="1971">1971</option>
+                            <option value="1970">1970</option>
+                            <option value="1969">1969</option>
+                            <option value="1968">1968</option>
+                            <option value="1967">1967</option>
+                            <option value="1966">1966</option>
+                            <option value="1965">1965</option>
+                            <option value="1964">1964</option>
+                            <option value="1963">1963</option>
+                            <option value="1962">1962</option>
+                            <option value="1961">1961</option>
+                            <option value="1960">1960</option>
+                            <option value="1959">1959</option>
+                            <option value="1958">1958</option>
+                            <option value="1957">1957</option>
+                            <option value="1956">1956</option>
+                            <option value="1955">1955</option>
+                            <option value="1954">1954</option>
+                            <option value="1953">1953</option>
+                            <option value="1952">1952</option>
+                            <option value="1951">1951</option>
+                            <option value="1950">1950</option>
+                            <option value="1949">1949</option>
+                            <option value="1948">1948</option>
+                            <option value="1947">1947</option>
+                            <option value="1946">1946</option>
+                            <option value="1945">1945</option>
+                            <option value="1944">1944</option>
+                            <option value="1943">1943</option>
+                            <option value="1942">1942</option>
+                            <option value="1941">1941</option>
+                            <option value="1940">1940</option>
+                            <option value="1939">1939</option>
+                            <option value="1938">1938</option>
+                            <option value="1937">1937</option>
+                            <option value="1936">1936</option>
+                            <option value="1935">1935</option>
+                            <option value="1934">1934</option>
+                            <option value="1933">1933</option>
+                            <option value="1932">1932</option>
+                            <option value="1931">1931</option>
+                            <option value="1930">1930</option>
+                            <option value="1929">1929</option>
+                            <option value="1928">1928</option>
+                            <option value="1927">1927</option>
+                            <option value="1926">1926</option>
+                            <option value="1925">1925</option>
+                            <option value="1924">1924</option>
+                            <option value="1923">1923</option>
+                            <option value="1922">1922</option>
+                            <option value="1921">1921</option>
+                            <option value="1920">1920</option>
+                            <option value="1919">1919</option>
+                            <option value="1918">1918</option>
+                            <option value="1917">1917</option>
+                            <option value="1916">1916</option>
+                            <option value="1915">1915</option>
+                            <option value="1914">1914</option>
+                            <option value="1913">1913</option>
+                            <option value="1912">1912</option>
+                            <option value="1911">1911</option>
+                            <option value="1910">1910</option>
+                            <option value="1909">1909</option>
+                            <option value="1908">1908</option>
+                            <option value="1907">1907</option>
+                            <option value="1906">1906</option>
+                            <option value="1905">1905</option>
+                            <option value="1904">1904</option>
+                            <option value="1903">1903</option>
+                            <option value="1902">1902</option>
+                            <option value="1901">1901</option>
+                        </select></div>
+                </fieldset>
+                <fieldset id="moon-birth_time"><label for="moon-birth_time">Birth Time: </label>
+                    <div class="moon-inputs-container"><label hidden="" for="moon-hour">hour:</label><select
+                            id="moon-hour" name="hour" required="" data-gtm-form-interact-field-id="4">
+                            <option hidden="" disabled="disabled" selected="selected" value="">HH</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="00">12</option>
+                        </select><label hidden="" for="moon-minute">minute:</label><select id="moon-minute"
+                            name="minute" required="" data-gtm-form-interact-field-id="3">
+                            <option hidden="" disabled="disabled" selected="selected" value="">MM</option>
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                            <option value="44">44</option>
+                            <option value="45">45</option>
+                            <option value="46">46</option>
+                            <option value="47">47</option>
+                            <option value="48">48</option>
+                            <option value="49">49</option>
+                            <option value="50">50</option>
+                            <option value="51">51</option>
+                            <option value="52">52</option>
+                            <option value="53">53</option>
+                            <option value="54">54</option>
+                            <option value="55">55</option>
+                            <option value="56">56</option>
+                            <option value="57">57</option>
+                            <option value="58">58</option>
+                            <option value="59">59</option>
+                        </select><label hidden="" for="moon-phase">AM/PM</label><select id="moon-phase" name="phase"
+                            required="" data-gtm-form-interact-field-id="5">
+                            <option selected="selected" value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select></div>
+                </fieldset>
+                <fieldset id="moon-birth_place"><label for="moon-place">Birth Place: </label>
+                    <div class="moon-inputs-container" id="moon-place-input-container"><input name="place" type="text"
+                            data-gtm-form-interact-field-id="6">
+                        <div id="moon-place-container"></div>
+                    </div>
+                </fieldset>
+                <fieldset id="moon-submit-button"><input type="submit" value="Submit" disabled=""></fieldset>
+            </form>
+        </div>
+        <!--------------------------------- First Page End ---------------------------------->
+
+        <!--------------------------------- Second Page ---------------------------------->
+        <div id="moon-result-container" class="moon-hidden">
+            <img src="infographics/images/PS-logo.png" width="280px">
+            <!-- <div id="moon-zodiac-sign-image" style="padding:1em 0em;">
+                <img id="moon-main-img" src="infographics/images/first-house-img.svg" width="130px"
+                    style="padding:1em 0em;">
+            </div> -->
+            <!-- <h2 class="h1" id="moon-main-heading" style="width:80%">moon in the First House</h2> -->
+            <!-- <img src="infographics/images/result-heading-img.svg" width="30%" style="padding:1em 0em;"> -->
+
+            <div id="moon-result">
+
+                <div class="moon-result-box">
+                    <img class="moon-result-img" id="moon-zodiac-sign-image" src="infographics/images/aries.svg" alt="">
+                    <!-- <h3 class="moon-result-head">Talents</h3> -->
+                    <!-- <p id="weakness"></p> -->
+                    <p class="moon-result-para" id="talents">ARIES</p>
+                </div>
+
+                <div class="moon-result-boxes">
+                    <!-- <img class="moon-result-img"  src="infographics/images/Strengths.svg" alt="">
+ <h3 class="moon-result-head">Strengths</h3> -->
+                    <h2 class="h2" id="mars-sign">Mars in Aries</h2>
+                    <p class="moon-result-para" id="strengths">You're all about action. When you have your sights set on
+                        something, you tend to tackle it fast. While you have ample enthusiasm at the beginning of a
+                        project, you can cool off or get distracted if you're not careful to keep your eyes on the
+                        prize. If you're unhappy with something, your fiery anger can flare up fast, but once you've
+                        confronted the issue you're able to move on just as quickly. Your impulsivity carries over into
+                        your romantic life as well, and you may jump into sexual encounters quickly.
+                    </p>
+                </div>
+
+
+            </div>
+            <!---------- moon Description ----------->
+            <!-- <p id="moon-zodiac-description">You're probably familiar with your sun sign, which is your primary zodiac
+                sign, but you may not know
+                about your rising sign. Also known as your ascendant sign, your rising sign represents the mask that you
+                wear for the world. This is the zodiac sign that was rising over the eastern horizon at the time of your
+                birth. Rising signs change every two hours, so you need to know exactly when you came into the world to
+                determine your ascendant. Fill out the information below to learn more about the outward impression that
+                you give to the world</p> -->
+            <!---------- moon Description ----------->
+
+            <p>Mars is just one of the many planets that influences your astrological chart .Learn more about what sign
+                your other planets fall into see how all these puzzle pieces come together in
+                your unique one-of a kind self.
+            </p>
+
+            <div id="moon-jump-btn">
+                <a href="#" id="jumplink"><button id="button-jumplink">Speak with a psychic astrologer to learn more
+                    </button></a>
+            </div>
+            <div id="moon-retry">
+                <p><span id="moon-left-arrow"></span>
+                    << Start Again</p>
+            </div>
+            <!-- <div id="moon-divider"><img src="infographics/images/result-border-top.svg" alt="------" loading="lazy">
+ </div> -->
+            <!-- <p> << Strat Again
+ </p> -->
+            <!-- <div id="moon-divider"><img src="infographics/images/line.svg" alt="------" loading="lazy">
+ </div> -->
+            <img src="infographics/images/line.svg" width="87%">
+
+            <div id="moon-resources">
+                <h4>
+                    Resources:
+                </h4>
+                <div class="moon-resource-links">
+                    <a href="https://www.shape.com/lifestyle/mind-and-body/astrology/mars-sign-meaning#:~:text=Mars'%20Meaning%20In%20Your%20Birth%20Chart&text=The%20placement%20of%20Mars%20%E2%80%94%20the,and%20express%20anger%20and%20aggression."
+                        target="_blank">
+                        https://www.shape.com/lifestyle/mind-and-body/astrology/mars-sign-meaning#:~:text=Mars%27%20Meaning%20In%20Your%20Birth%20Chart&text=The%20placement%20of%20Mars%20%E2%80%94%20the,and%20express%20anger%20and%20aggression.
+                    </a>
+                    <br>
+                    <a href="https://cafeastrology.com/articles/marsinsigns_pg2.html" target="_blank">
+                        https://cafeastrology.com/articles/marsinsigns_pg2.html
+                    </a>
+                    <br>
+                    <a href="https://www.womenshealthmag.com/life/g27912214/mars-sign/" target="_blank">
+                        https://www.womenshealthmag.com/life/g27912214/mars-sign/
+                    </a>
+                    <br>
+                    <a href="https://www.mindbodygreen.com/articles/what-your-mars-sign-reveals-about-your-energy-drive-and-sex-life"
+                        target="_blank">
+                        https://www.mindbodygreen.com/articles/what-your-mars-sign-reveals-about-your-energy-drive-and-sex-life
+                    </a>
+                    <br>
+                    <a href="https://a-z-animals.com/blog/mars-sign-meaning-and-traits-for-all-12-zodiac-signs/"
+                        target="_blank">
+                        https://a-z-animals.com/blog/mars-sign-meaning-and-traits-for-all-12-zodiac-signs/
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--------------------------------- Second Page End---------------------------------->
+
+    </div>
+</div>
+
+
+<script>
+    const baseUrl = 'https://api.bloom.be/api';
+    const accessToken = "427774|k8QSt9xYqdJad7nb3MDvNl3ajLCt455WJpEgUVVK";
+
+    const moonSignsDetail = {
+        "Aries": {
+            image: "infographics/images/aries.png",
+            talents: "Aries",
+            strengths: "You're all about action. When you have your sights set on something, you tend to tackle it fast. While you have ample enthusiasm at the beginning of a project, you can cool off or get distracted if you're not careful to keep your eyes on the prize. If you're unhappy with something, your fiery anger can flare up fast, but once you've confronted the issue you're able to move on just as quickly. Your impulsivity carries over into your romantic life as well, and you may jump into sexual encounters quickly. ",
+            marsign: "Mars in Aries"
+        },
+        "Taurus": {
+            image: "infographics/images/taurus.png",
+            talents: "Taurus",
+            strengths: "With Mars in Taurus, your drive is slow and steady. You take your time approaching projects, but you're steadfast in sticking with them to the end. You have a very long fuse, but when your temper does ignite, it can explode. You can certainly hold a grudge with your innately stubborn nature. In romance, you take your time and know how to make sure that your partner enjoys the experience fully.",
+            marsign: "Mars in Taurus"
+        },
+        "Gemini": {
+            image: "infographics/images/gemini.png",
+            talents: "Gemini",
+            strengths: "Gemini is all about communication. With Mars here, you're well-equipped to use your words to spur people on to action. It's important to think carefully about how you speak, because you can turn words into weapons or use them to grow beautiful opportunities on fertile ground. You're an expert at debate, and can talk your way out of nearly any situation. Words play a big role in your sexual relationships as well, and can heat things up quickly if your partner knows how to communicate with you in bed.",
+            marsign: "Mars in Gemini"
+        },
+        "Cancer": {
+            image: "infographics/images/cancer.png",
+            talents: "Cancer",
+            strengths: "It's incredibly important for you to feel grounded and secure. If you don't, you may lash out like a cornered animal, expressing anger from fear. Your primal nature is heavily influenced by your emotions which can make you seem moody and unpredictable to those who don't know you well. Learn to harness your emotions and you can direct them toward productive pursuits rather than allowing them to take control. Take your time to find the sense of safety that you need before embarking on a sexual relationship.",
+            marsign: "Mars in Cancer"
+        },
+        "Leo": {
+            image: "infographics/images/leo.png",
+            talents: "Leo",
+            strengths: "You know what you want and you're determined to get it. You approach life with passion and enthusiasm, ready to claim all that it can offer you. In your sexual relationships, you want a little of everything, from playful evenings and ample excitement to romance and deep adoration. You're a natural leader with no shortage of confidence and gusto. While you tend toward a generous, upbeat attitude, your temper can be explosive once ignited.",
+            marsign: "Mars in Leo"
+        },
+        "Virgo": {
+            image: "infographics/images/virgo.png",
+            talents: "Virgo",
+            strengths: "Having Mars in Virgo gives you a deeply analytical nature. You like to organize, research, and plan before you actually set forth on a new project. You're extremely detail-oriented, and when you commit to doing a thing, you make sure that it's done right. You shy away from outbursts and instead express your anger in sharp but succinct criticisms. You can get stuck in your head in your sexual relationships, but you're thoughtful and determined to please.",
+            marsign: "Mars in Virgo"
+        },
+        "Libra": {
+            image: "infographics/images/libra.png",
+            talents: "Libra",
+            strengths: "With Libra influencing Mars, you'll find you're driven by a deep need to help others. This can make you quite the people-pleaser, often neglecting your own interests to prioritize others'. You express anger passive-aggressively. While this may help you avoid outright arguments, it makes it difficult for you to get the justice you deserve when you're wronged. You prefer to keep your sexual relationships lighthearted and sweet, with more emphasis on friendship than romantic partnership.",
+            marsign: "Mars in Libra"
+        },
+        "Scorpio": {
+            image: "infographics/images/scorpio.png",
+            talents: "Scorpio",
+            strengths: "You love to have power in every aspect of your life. You have incredible willpower and won't let anyone incite your temper to the point of losing control. Rather, you'll plot quietly behind the scenes to exact revenge when you're wronged, though the perpetrator may never know that yours was the hand of justice. You're both driven and stubborn, which can help you attain nearly any goal. In sexual relationships, you seek deep connection and single-minded dedication.",
+            marsign: "Mars in Scorpio"
+        },
+        "Sagittarius": {
+            image: "infographics/images/sagittarius.png",
+            talents: "Sagittarius",
+            strengths: "You're enthusiastic, open-minded, and ready for adventure. You're usually juggling several projects at once, bouncing around as your mood demands. You love philosophy and debate, but shy away from arguments. When you start to get angry, your first impulse is to run. You'd prefer to stay where things are carefree and fun. You're adventurous in your sexual relationships as well, and are always interested in new experiences.",
+            marsign: "Mars in Sagittarius"
+        },
+        "Capricorn": {
+            image: "infographics/images/capricorn.png",
+            talents: "Capricorn",
+            strengths: "You're goal-oriented and like to be in control. You have excellent self-control and rarely lose your temper. However, you also tend to stuff your anger down and avoid it, which can lead to bigger problems later on. It's very difficult for you to let go, as you prefer to plan and execute in an orderly manner. You have high standards for your sexual and romantic partners and take your time selecting the right ones.",
+            marsign: "Mars in Capricorn"
+        },
+        "Aquarius": {
+            image: "infographics/images/aquarius.png",
+            talents: "Aquarius",
+            strengths: "You have an unpredictable character and like to keep people on their toes. You shy away from routine and prefer a continually creative approach to life, changing things up as you go. Your adaptability makes it easy for you to get what you want, particularly in the short-term. You're often too scattered to maintain a project over a long period of time, though. In sexual relationships, it's very important to you that you're friends with your partner first.",
+            marsign: "Mars in Aquarius"
+        },
+        "Pisces": {
+            image: "infographics/images/pisces.png",
+            talents: "Pisces",
+            strengths: "Passive Pisces clashes with action-packed Mars, making it difficult for you to assert yourself or set your feet on a particular path. Though you're gentle, you're extremely changeable, making it difficult for others to pin down what you want. You tend to avoid anger and confrontation, though this can ultimately leave you feeling moody and hurt. In sexual relationships, you seek ample romance, deep emotion, and richly sensual experiences.",
+            marsign: "Mars in Pisces"
+        }
+    }
+
+    const inputs = document.querySelector('#moon-input-container');
+    const results = document.querySelector('#moon-result-container');
+
+    const getPlaces = async (place) => {
+        const config = {
+            headers: {
+                "Authorization": "Bearer " + accessToken,
+                "Content-Type": "application/json"
+            }
+        }
+        const data = {
+            "name": place
+        }
+        try {
+            const res = await axios.post(`${baseUrl}/places`, data, config);
+
+            // console.log("Places =" + JSON.stringify(res.data)); // fetch All Country from database
+
+            return res.data;
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+
+    // give suggestion of places, based on the input
+    const placeInput = document.querySelector('input[name="place"]');
+    const placeSuggestionBox = document.querySelector('#moon-place-container');
+    let place_id = null;
+
+    placeInput.addEventListener('keyup', async () => {
+        const placeValue = placeInput.value;
+        let places;
+        if (placeValue.length > 1) {
+            try {
+                places = await getPlaces(placeValue);
+            } catch (err) {
+                console.log(err);
+                return alert('API is not responsing right now. Please try again later.');
+            }
+            placeSuggestionBox.innerHTML = '';
+
+            if (places.data.length > 0) {
+                const placeContainer = document.createElement('ul'); // Creating Birthplace <ul> - Dropdown
+                placeContainer.id = 'moon-place-suggestions';
+
+                places.data.forEach(place => {
+                    const placeName = place.name; // Fetch Birthplace <li> - Dropdown
+                    const country_code = place.admin1_code;
+                    const timezone = place.timezone;
+                    const placeId = place.id;
+
+                    const placeOption = document.createElement('li');
+                    placeOption.id = placeId;
+                    placeOption.innerHTML = `${placeName}, ${country_code}, ${timezone}`;
+                    placeContainer.appendChild(placeOption);
+                })
+                placeSuggestionBox.appendChild(placeContainer);
+            }
+        } else {
+            placeSuggestionBox.innerHTML = '';
+        }
+    });
+
+
+    // Final Trigger after Birthplace Selection
+    placeSuggestionBox.addEventListener('click', async (e) => {
+        place_id = e.target.id;
+        const placeName = e.target.innerText.split(',')[0];
+        const country_code = e.target.innerText.split(',')[1];
+        const timezone = e.target.innerText.split(',')[2];
+
+        placeInput.value = `${placeName},${country_code}`; // Finally User Selected in <li> dropdown 
+        placeSuggestionBox.innerHTML = '';
+    })
+
+
+    const getNatalHoroscope = async (name, date, time, place_id) => {
+        // name: String
+        // date: String (YYYY-MM-DD)
+        // time: String (HH:MM)
+        // place_id: Number
+
+        const config = {
+            headers: {
+                "Authorization": "Bearer " + accessToken,
+                "Content-Type": "application/json"
+            }
+        }
+        const data = {
+            "name": name,
+            "date": date,
+            "time": time,
+            "place_id": place_id,
+            "lang": "en"
+        }
+        const res = await axios.post(`${baseUrl}/natal`, data, config);
+
+        //console.log(res); // Fetch moon Details as an Json Format.
+
+        return res.data
+    }
+
+
+    // Get moonSign From Database
+    const getmoonSign = async (name, date, time, place_id) => {
+        // name: String
+        // date: String (YYYY-MM-DD)
+        // time: String (HH:MM)
+        // place_id: Number
+
+        const horoscope = await getNatalHoroscope(name, date, time, place_id); //fetch moon Details from Database
+        const moonSign = horoscope.planets[4].signName;
+
+        /****** Find House details ******/
+        // const moonSignId = horoscope.ascendant.signId;
+        // console.log("moonSignId =" + moonSignId);
+        // const housedetails = horoscope.housecusps;
+        // for (let h = 0; h < housedetails.length; h++) {
+        //     if (housedetails[h].signId == moonSignId) {
+        //         var finalHoseId = housedetails[h].houseName;
+        //     }
+        //     console.log("houseSignId =" + housedetails[h].signId);
+
+        // }
+
+        //console.log(finalHoseId);
+        /****** Find House details ******/
+
+        console.log("moonSign == " + moonSign);
+
+        //return finalHoseId;
+        return moonSign;
+    }
+
+    const addResult = async (data) => {
+        const moonSign = await getmoonSign(data.name, data.date, data.time, data.place_id); // Get moonSign
+        console.log("moon" + moonSign);
+        //const sign = document.querySelector('#moon-moon-sign');
+        //sign.innerHTML = `${moonSign} Rising`;
+        //const house = moonSignsDetail[moonSign].house;
+        // const houseName = document.querySelector('#moon-main-heading'); // Get Heading Houses 
+        // houseName.innerHTML = `Moon in the ${house}`;
+
+        // const signDetails = document.querySelector('#moon-zodiac-description'); // Get Description 
+        // signDetails.innerHTML = moonSignsDetail[moonSign].about;
+
+        const fetch_talents = document.querySelector('#talents'); // Get talents 
+        fetch_talents.innerHTML = moonSignsDetail[moonSign].talents;
+
+        const fetch_strengths = document.querySelector('#strengths'); // Get strengths 
+        fetch_strengths.innerHTML = moonSignsDetail[moonSign].strengths;
+
+        const fetch_mars_sign = document.querySelector('#mars-sign'); // Get mars-sign 
+        fetch_mars_sign.innerHTML = moonSignsDetail[moonSign].marsign;
+
+
+        //const fetch_jumplink = document.querySelector('#jumplink'); // Get Jumplink 
+        //fetch_jumplink.href = moonSignsDetail[moonSign].jumplink;
+
+        //const button_jumplink = document.querySelector('#button-jumplink'); // Get Button Jumplink 
+        //button_jumplink.innerHTML = `Continue reading about Moon in the ${house}`;
+
+
+        const signImage = document.querySelector('#moon-zodiac-sign-image'); // Get Image
+        // const image = document.createElement('img');
+        signImage.src = moonSignsDetail[moonSign].image;
+        // signImage.appendChild(image);
+
+        // Change Second page BG image
+        document.getElementById('moon-calculator').style.backgroundImage = "url('infographics/images/background2.jpg')";
+
+
+        return Promise.resolve();
+    }
+
+    function addYears(startingYear, endingYear = null) {
+        if (endingYear === null) {
+            d = new Date();
+            endingYear = d.getFullYear();
+        }
+        const years = [];
+        for (let i = endingYear; i > startingYear; i--) {
+            years.push(i);
+        }
+
+        const yearSelect = document.querySelector('#moon-year');
+        years.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.innerHTML = year;
+            yearSelect.appendChild(option);
+        })
+    }
+
+    function convertTime12to24(hour, minute, period) {
+        let time = null;
+        if (period === 'am') {
+            time = `${hour}:${minute}`;
+        } else {
+            time = `${parseInt(hour) + 12}:${minute}`;
+        }
+        return time;
+    }
+
+
+
+
+
+
+
+    ///----------------- Reset Button ------------------
+    const resetForm = () => {
+        const form = document.querySelector('#moon-horoscope-form');
+        form.reset();
+        // const sign = document.querySelector('#moon-main-heading');
+        // sign.innerHTML = '';
+
+        document.getElementById('moon-calculator').style.backgroundImage = "url('infographics/images/background1.jpg')";
+
+        // const signDetails = document.querySelector('#moon-zodiac-description');
+        // signDetails.innerHTML = '';
+        // const signImage = document.querySelector('#moon-zodiac-sign-image');
+        // signImage.innerHTML = '';
+        const button = form.querySelector('input[type="submit"]');
+        button.disabled = true;
+        place_id = null;
+    }
+
+    const loader = document.querySelector('.moon-loader');
+    const figureBox = loader.querySelector('figure');
+    let stopLoading = false;
+
+
+    // Change images Dynamically 
+    const addImg = (src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        figureBox.innerHTML = img.outerHTML;
+    }
+
+    // Push All images to Srcs Array
+    let srcs = [];
+    for (let zodiac in moonSignsDetail) {
+        srcs.push(moonSignsDetail[zodiac].image);
+    }
+
+    function sleep(seconds) {
+        return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+    }
+
+    const changeImages = async (seconds) => {
+        loader.classList.remove('anime-hidden');
+        // for (let i = 0; i < srcs.length; i++) {
+        // if (stopLoading) {
+        // figureBox.innerHTML = '';
+        // loader.classList.add('anime-hidden');
+        // return;
+        // }
+        // addImg(srcs[i]);
+        // await sleep(seconds);
+        // }
+        //changeImages();
+    }
+
+    const toggle = () => {
+        const inputs = document.querySelector('#moon-input-container');
+        const results = document.querySelector('#moon-result-container');
+
+        inputs.classList.toggle('moon-hidden');
+        results.classList.toggle('moon-hidden');
+    }
+
+    // Start images loading randomally
+    const startLoading = () => {
+        changeImages(0.2);
+    }
+
+    // Stop images loading randomally
+    const stopLoad = async () => {
+        stopLoading = true;
+        await sleep(0.2);
+        stopLoading = false;
+    }
+
+    // get form details
+    const form = document.querySelector('#moon-horoscope-form');
+
+    setInterval(() => {
+        const formData = new FormData(form);
+        const name = formData.get('name') || 'Zephyrus';
+        const day = formData.get('day');
+        const month = formData.get('month');
+        const year = formData.get('year');
+        const hour = formData.get('hour');
+        const minute = formData.get('minute');
+        const phase = formData.get('phase');
+
+        const button = form.querySelector('input[type="submit"]');
+
+        if (day && month && year && hour && minute && phase && place_id) {
+            button.disabled = false;
+        }
+
+    }, 100);
+
+
+    // Button Trigger
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        //alert('button trigger');
+        const formData = new FormData(form);
+        const name = formData.get('name') || 'Zephyrus';
+        const day = formData.get('day');
+        const month = formData.get('month');
+        const year = formData.get('year');
+        const hour = formData.get('hour');
+        const minute = formData.get('minute');
+        const phase = formData.get('phase');
+
+
+        if (place_id === null) {
+            const place = formData.get('place').split(',')[0];
+
+            const places = await getPlaces(place);
+            place_id = places.data[0].id;
+
+        }
+
+        const data = {
+            "name": name,
+            "date": `${year}-${month}-${day}`,
+            "time": convertTime12to24(hour, minute, phase),
+            "place_id": place_id
+        }
+        if (checkStatus()) {
+            inputs.classList.toggle('moon-hidden');
+            //startLoading();
+            await addResult(data);
+            //await stopLoad();
+            results.classList.toggle('moon-hidden');
+        } else {
+            alert('Please check your internet connection');
+        }
+    });
+
+    const retryButton = document.querySelector('#moon-retry>p');
+    retryButton.addEventListener('click', () => {
+        resetForm();
+        toggle();
+    })
+
+    addYears(1900);
+    resetForm();
+
+    // Check if user is connected to internet
+
+    const request_url = 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js';
+
+    async function checkStatus() {
+        let res = null;
+        let status = null;
+        try {
+            res = await fetch(request_url);
+            status = res.status;
+        } catch (err) {
+            console.log(err);
+        }
+
+        if (status >= 200 && status < 300) {
+            await sleep(1)
+            return true;
+        } else {
+            alert('Check your internet connection');
+            await sleep(10);
+        }
+        checkStatus();
+    }
+
+    checkStatus();
+
+
+</script>
