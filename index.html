@@ -67,8 +67,10 @@
         width: min(90%, var(--container-max-width));
         margin: 0 auto;
         display: flex;
-        align-items:center; 
         height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 2em 0em 0em 0em;
     }
 
     .moon-header img {
@@ -80,9 +82,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: top;
-        margin: 0 auto;
-        margin-top: 1em;
+        justify-content: center;
+        margin: 0 auto; 
     }
 
     /* Inputs */
@@ -111,7 +112,7 @@
         display: inline-block;
         font-family: 'Cabin Bold';
     }
-
+    
     .moon-inputs-container {
         display: flex;
         flex: 1 1 auto;
@@ -125,6 +126,7 @@
         padding: 0;
         color: #f4954e;
         width:80%;
+        padding-top:20px;
     }
 
     #moon-input-container p {
@@ -244,7 +246,7 @@
         color: #0c0c0c;
         background: #f4954e;
         border: none;
-        margin-top: 1.3em;
+        margin-top: 1.2em;
         margin-bottom: 0.5em;
         cursor: pointer;
         font-family: 'Cabin Bold';
@@ -316,14 +318,14 @@
 
     #moon-result {
         width: min(100%, var(--container-max-width));
-        padding: 1.5em 2em 1.3em 2em;
-        display: flex;
-        /* justify-content: center; */
+        padding: 1.1em 1.1em 1.1em 1.1em;
+        display: flex; 
         align-items: center;
         gap: 2.5em;
         border: 2px solid #f4954e;
         border-radius: 1em;
-        margin: 0.2em 1em 1em 1em;
+        margin: 1em 1em 1.2em 1em;
+        background-color: #f4954e29;
     }
 
 
@@ -363,7 +365,7 @@
     }
 
     #moon-result .moon-result-box .moon-result-img {
-        width: 180px;
+        width: 160px;
     }
 
     #moon-result .moon-result-box h3.moon-result-head {
@@ -428,7 +430,9 @@
         font-size: 1em;
         line-height: 1.5em;
     }
-
+    #moon-result-container .mars-desc{
+        font-size: 0.9em;
+    }
     #moon-result-container>p {
         width: min(100%, var(--container-max-width));
         line-height: 1.5em;
@@ -437,7 +441,7 @@
     #moon-retry p {
         cursor: pointer;
         color: white;
-        margin: 1em auto;
+        margin: 0.9em auto 0.5em auto;
         font-family: 'Cabin Bold';
     }
 
@@ -519,6 +523,14 @@
         height: 100%;
     }
 
+    @media(max-width:1200px){
+       .moon-main { 
+        display: flex;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+    }
+    }
 
     @media (max-width: 900px) {
         #moon-result .moon-result-boxes {
@@ -542,6 +554,11 @@
             border-bottom: 2px dotted #f39556;
             top: 25px;
             width: 100%;
+        }
+        #moon-input-container .h1 {
+            width: 100%;
+            font-size: 3em;
+            padding-top:9px;
         }
     }
 
@@ -576,6 +593,7 @@
         #moon-input-container .h1 {
             width: 100%;
             font-size: 3em;
+            padding-top:5px;
         }
         #moon-horoscope-form{
             margin-top: 1em;
@@ -612,7 +630,7 @@
 
         <!--------------------------------- First Page End ---------------------------------->
         <div id="moon-input-container" class="">
-            <img src="infographics/images/PS-logo.png" width="280px"><br>
+            <img src="infographics/images/PS-logo.png" width="280px"> 
             <h2 class="h1">Mars Sign Calculator</h2>
             <img src="infographics/images/line.svg" width="90%">
             <p>The position of Mars in your astrological chart yields valuable information about your
