@@ -66,6 +66,9 @@
     .moon-main {
         width: min(90%, var(--container-max-width));
         margin: 0 auto;
+        display: flex;
+        align-items:center; 
+        height: 100%;
     }
 
     .moon-header img {
@@ -175,7 +178,7 @@
         margin: 0 auto;
         padding: 0;
         color: #f4954e;
-        padding-bottom: 21px;
+        padding-bottom: 15px;
         padding-top: 21px;
         line-height: 0.9em;
     }
@@ -241,8 +244,8 @@
         color: #0c0c0c;
         background: #f4954e;
         border: none;
-        margin-top: 2em;
-        margin-bottom: 2em;
+        margin-top: 1.3em;
+        margin-bottom: 0.5em;
         cursor: pointer;
         font-family: 'Cabin Bold';
         border-radius: 40px;
@@ -320,7 +323,7 @@
         gap: 2.5em;
         border: 2px solid #f4954e;
         border-radius: 1em;
-        margin: 0.2em 1em 2em 1em;
+        margin: 0.2em 1em 1em 1em;
     }
 
 
@@ -331,7 +334,7 @@
         flex-direction: column;
         /* max-width: 480px; */
         max-width: 200px;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
         gap: 2px;
         position: relative;
@@ -390,7 +393,13 @@
         justify-content: center;
     }
 
-   
+    .moon-result-boxes .moon-result-para {
+    font-size: 0.9em;
+    }
+
+    #moon-result .mars-desc{
+        font-size: 0.9em;
+    }
 
     #moon-result .column-separator img {
         width: 100%;
@@ -456,7 +465,7 @@
         margin: 0.5em auto;
     }
     #moon-resources{
-        padding-top:10px;
+        padding-top:2px;
     }
     #moon-resources>.moon-resource-links {
         margin-top: 0.2em;
@@ -466,7 +475,7 @@
     #moon-resources>.moon-resource-links>a {
         color: var(--primary-color);
         text-decoration: none;
-        font-size: 12px;
+        font-size: 10px;
         margin: 0;
         display: inline-block;
         margin-bottom: 5px;
@@ -598,7 +607,7 @@
     <div class="moon-loader anime-hidden">
         <figure class="moon-loading-images"></figure>
     </div>
-    <div class="moon-header"> </div>
+    <!-- <div class="moon-header"> </div> -->
     <div class="moon-main">
 
         <!--------------------------------- First Page End ---------------------------------->
